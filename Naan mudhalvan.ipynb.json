@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "kernelspec": {
+      "name": "python",
+      "display_name": "Python (Pyodide)",
+      "language": "python"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "python",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.8"
+    }
+  },
+  "nbformat_minor": 5,
+  "nbformat": 4,
+  "cells": [
+    {
+      "id": "6e31ab79-c472-47d6-b257-37b6ee4d6152",
+      "cell_type": "code",
+      "source": "# Product catalog with categories\nproducts = {\n    \"Running Shoes\": \"fitness\",\n    \"Yoga Mat\": \"fitness\",\n    \"Protein Powder\": \"fitness\",\n    \"Smart Watch\": \"fitness\",\n    \"Fitness Tracker\": \"fitness\",\n    \"Coffee Maker\": \"kitchen\",\n    \"Espresso Machine\": \"kitchen\",\n    \"French Press\": \"kitchen\",\n    \"Coffee Grinds\": \"kitchen\",\n    \"Blender\": \"kitchen\",\n    \"Air Fryer\": \"kitchen\",\n    \"Running Socks\": \"fitness\",\n    \"Vacation Pack\": \"fitness\",\n    \"Gift Card\": \"general\"\n}\n\n# Customer profiles\ncustomers = [\n    {\n        \"name\": \"Alice\",\n        \"purchase_history\": [\"Running Shoes\"],\n        \"interests\": [\"fitness\", \"running\"],\n        \"wishlist\": [\"Smart Watch\", \"Fitness Tracker\"]\n    },\n    {\n        \"name\": \"Bob\",\n        \"purchase_history\": [\"Coffee Maker\"],\n        \"interests\": [\"coffee\", \"kitchen\"],\n        \"wishlist\": [\"Espresso Machine\"]\n    }\n]\n\ndef recommend_products(customer, products, max_recommendations=5):\n    \"\"\"Generate product recommendations for a given customer.\"\"\"\n    recommendations = set()\n\n    # 1. Prioritize wishlist items\n    for item in customer.get(\"wishlist\", []):\n        if item in products:\n            recommendations.add(item)\n            if len(recommendations) >= max_recommendations:\n                return list(recommendations)\n\n    # 2. Recommend based on matching interests (categories), excluding purchased\n    for product, category in products.items():\n        if (category in customer[\"interests\"] and \n            product not in customer[\"purchase_history\"] and \n            product not in recommendations):\n            recommendations.add(product)\n            if len(recommendations) >= max_recommendations:\n                return list(recommendations)\n\n    # 3. Add general recommendations if still needed\n    for product, category in products.items():\n        if category == \"general\" and product not in recommendations:\n            recommendations.add(product)\n            if len(recommendations) >= max_recommendations:\n                break\n\n    return list(recommendations)\n\n# Generate and print recommendations\nfor customer in customers:\n    recs = recommend_products(customer, products)\n    print(f\"Recommendations for {customer['name']}: {recs}\")\n    ",
+      "metadata": {
+        "trusted": true
+      },
+      "outputs": [],
+      "execution_count": null
+    }
+  ]
+}
